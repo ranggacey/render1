@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Billing Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-soft: #fff0f8;
+            --bg-card: #ffffffd9;
+            --pink-main: #ff4fa3;
+            --pink-dark: #c92f7d;
+            --pink-light: #ffd0ea;
+            --text-main: #4d2142;
+            --text-soft: #805068;
+            --white: #ffffff;
+            --shadow: 0 12px 30px rgba(201, 47, 125, 0.18);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            color: var(--text-main);
+            background:
+                radial-gradient(circle at 15% 15%, #ffe0f1 0, #ffe0f1 14%, transparent 15%),
+                radial-gradient(circle at 90% 8%, #ffd6ee 0, #ffd6ee 10%, transparent 11%),
+                radial-gradient(circle at 78% 87%, #ffe6f4 0, #ffe6f4 13%, transparent 14%),
+                linear-gradient(140deg, #fff6fb, #ffeef8 45%, #ffe1f2);
+            min-height: 100vh;
+            padding: 32px 20px 40px;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: 0 auto;
+            display: grid;
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid #ffd2e9;
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            padding: 24px;
+        }
+
+        h1 {
+            color: var(--pink-dark);
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            color: var(--pink-dark);
+            margin-bottom: 12px;
+            font-size: 1.25rem;
+        }
+
+        .subtitle {
+            color: var(--text-soft);
+            line-height: 1.6;
+        }
+
+        .flower {
+            font-size: 1.35rem;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+            color: var(--pink-dark);
+        }
+
+        .meta-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .chip {
+            background: var(--pink-light);
+            color: var(--pink-dark);
+            border: 1px solid #ffbfe1;
+            padding: 6px 11px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        input, select {
+            border: 1px solid #f3a5cf;
+            border-radius: 12px;
+            padding: 10px 12px;
+            font-size: 0.95rem;
+            background: #fff9fd;
+            color: var(--text-main);
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--pink-main);
+            box-shadow: 0 0 0 3px rgba(255, 79, 163, 0.2);
+        }
+
+        .btn-wrap {
+            grid-column: 1 / -1;
+        }
+
+        button {
+            background: linear-gradient(120deg, #ff4fa3, #ff7abf);
+            border: none;
+            color: var(--white);
+            font-size: 0.95rem;
+            padding: 11px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.04);
+        }
+
+        .result {
+            margin-top: 15px;
+            background: #ffe3f3;
+            border: 1px solid #ffbde0;
+            color: var(--pink-dark);
+            font-weight: 700;
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .alert {
+            margin-top: 15px;
+            background: #fff0f0;
+            border: 1px solid #ffb6b6;
+            color: #a53a3a;
+            font-weight: 600;
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: 14px;
+            border: 1px solid #ffd1e9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 980px;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #ffe3f2;
+            font-size: 0.88rem;
+        }
+
+        th {
+            background: #ffc8e7;
+            color: #702147;
+            position: sticky;
+            top: 0;
+        }
+
+        tr:nth-child(even) td {
+            background: #fff5fb;
+        }
+
+        .small-note {
+            margin-top: 10px;
+            color: #8f5b75;
+            font-size: 0.84rem;
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 1.55rem;
+            }
+
+            .card {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <section class="card">
+            <div class="flower">
+                <i class="ri-heart-3-fill" aria-hidden="true"></i>
+                <i class="ri-flower-fill" aria-hidden="true"></i>
+                <i class="ri-hospital-fill" aria-hidden="true"></i>
+                <i class="ri-sparkling-2-fill" aria-hidden="true"></i>
+            </div>
+            <h1>Healthcare Billing Predictor</h1>
+            <p class="subtitle">
+                Halaman Flask ini menampilkan kolom-kolom dataset healthcare + prediksi biaya billing berdasarkan
+                <strong>Age</strong>, <strong>Gender</strong>, <strong>Blood Type</strong>, dan <strong>Medical Condition</strong>.
+            </p>
+            <div class="meta-list">
+                {% for col in column_names %}
+                    <span class="chip">{{ col }}</span>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="card">
+            <h2><i class="ri-stethoscope-fill" aria-hidden="true"></i> Prediksi Billing Amount</h2>
+            <form action="/predict" method="post">
+                <div class="input-group">
+                    <label for="age">Age</label>
+                    <input id="age" name="Age" type="number" min="0" max="120" step="1" required placeholder="Contoh: 45">
+                </div>
+
+                <div class="input-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender" name="Gender" required>
+                        <option value="" selected disabled>Pilih gender</option>
+                        {% for item in genders %}
+                            <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="blood_type">Blood Type</label>
+                    <select id="blood_type" name="Blood Type" required>
+                        <option value="" selected disabled>Pilih blood type</option>
+                        {% for item in blood_types %}
+                            <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="medical_condition">Medical Condition</label>
+                    <select id="medical_condition" name="Medical Condition" required>
+                        <option value="" selected disabled>Pilih kondisi medis</option>
+                        {% for item in medical_conditions %}
+                            <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="btn-wrap">
+                    <button type="submit"><i class="ri-magic-fill" aria-hidden="true"></i> Prediksi Sekarang</button>
+                </div>
+            </form>
+
+            {% if prediction_text %}
+                <div class="result">{{ prediction_text }}</div>
+            {% endif %}
+        </section>
+
+        <section class="card">
+            <h2><i class="ri-database-2-fill" aria-hidden="true"></i> Preview Data CSV (12 Baris Awal)</h2>
+            {% if dataset_warning %}
+                <div class="alert">
+                    <i class="ri-error-warning-fill" aria-hidden="true"></i> {{ dataset_warning }}
+                </div>
+            {% endif %}
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Gender</th>
+                            <th>Blood Type</th>
+                            <th>Medical Condition</th>
+                            <th>Doctor</th>
+                            <th>Hospital</th>
+                            <th>Insurance Provider</th>
+                            <th>Billing Amount</th>
+                            <th>Admission Type</th>
+                            <th>Medication</th>
+                            <th>Test Results</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in sample_data %}
+                            <tr>
+                                <td>{{ row['Name'] }}</td>
+                                <td>{{ row['Age'] }}</td>
+                                <td>{{ row['Gender'] }}</td>
+                                <td>{{ row['Blood Type'] }}</td>
+                                <td>{{ row['Medical Condition'] }}</td>
+                                <td>{{ row['Doctor'] }}</td>
+                                <td>{{ row['Hospital'] }}</td>
+                                <td>{{ row['Insurance Provider'] }}</td>
+                                <td>${{ "%.2f"|format(row['Billing Amount']) }}</td>
+                                <td>{{ row['Admission Type'] }}</td>
+                                <td>{{ row['Medication'] }}</td>
+                                <td>{{ row['Test Results'] }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="12">Data belum tersedia. Pastikan file dataset berhasil dibaca di server.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <p class="small-note">
+                Tip: Tema pink-flower bisa kamu ubah cepat dari variabel warna di bagian <code>:root</code>.
+            </p>
+        </section>
+    </main>
+</body>
+</html>
